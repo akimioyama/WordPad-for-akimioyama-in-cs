@@ -27,7 +27,23 @@ namespace WordPad_for_akimioyama
         public MainWindow()
         {
             InitializeComponent();
+
         }
+
+
+        private void NewCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void NewCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            TextBlock.Document.Blocks.Clear();
+        }
+
+
+
+
         private void Create_Click(object sender, RoutedEventArgs e)
         {
             TextBlock.Document.Blocks.Clear();

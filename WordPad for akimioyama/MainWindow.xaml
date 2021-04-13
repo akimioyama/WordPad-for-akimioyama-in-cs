@@ -8,31 +8,31 @@
         Title="WordPad for akimioyama" Width="971" Height="535">
     <Grid Background="#FFB8B8B8">
         <Menu Height="25" VerticalAlignment="Top">
-            <MenuItem Header="Файл">
-                <MenuItem Header="Создать" Click="Create_Click" > </MenuItem>
+            <MenuItem Header="_Файл">
+                <MenuItem Header="Создать" Click="Create_Click" ></MenuItem> 
                 <MenuItem Header="Открыть" Click="Open_Click"></MenuItem>
-                <MenuItem Header="Сохранить" ></MenuItem>
+                <MenuItem Header="Сохранить"></MenuItem>
                 <MenuItem Header="Сохранить как..." Click="Save_As_Click"></MenuItem>
                 <Separator />
                 <MenuItem Header="Печать" Click="Print_Click"></MenuItem>
-                <MenuItem Header="Предварительный просмотр" ></MenuItem>
+                <MenuItem Header="Предварительный просмотр"></MenuItem>
                 <MenuItem Header="Параметры страницы" ></MenuItem>
                 <Separator />
                 <MenuItem Header="Отправить" ></MenuItem>
                 <Separator />
                 <MenuItem Header="Выход" Click="Exit_Click" ></MenuItem>
             </MenuItem>
-            <MenuItem Header="Правка" >
-                <MenuItem Header="Отменить" ></MenuItem>
+            <MenuItem Header="_Правка" >
+                <MenuItem Header="Отменить" InputGestureText="Ctrl+Z"></MenuItem>
                 <Separator />
-                <MenuItem Header="Вырезать" ></MenuItem>
-                <MenuItem Header="Копировать" ></MenuItem>
-                <MenuItem Header="Вставить" ></MenuItem>
-                <MenuItem Header="Очистить" ></MenuItem>
-                <MenuItem Header="Выделить всё" ></MenuItem>
+                <MenuItem Header="Вырезать" Command="Cut"></MenuItem>
+                <MenuItem Header="Копировать" Command="Copy"></MenuItem>
+                <MenuItem Header="Вставить" Command="Paste" ></MenuItem>
+                <MenuItem Header="Очистить" Command="Delete"></MenuItem>
+                <MenuItem Header="Выделить всё" Command="SelectAll "></MenuItem>
                 <Separator />
-                <MenuItem Header="Найти" ></MenuItem>
-                <MenuItem Header="Заменить" ></MenuItem>
+                <MenuItem Header="Найти" Command="Find"></MenuItem>
+                <MenuItem Header="Заменить" Command="Replace"></MenuItem>
 
             </MenuItem>
             <MenuItem Header="Вид" >
@@ -66,7 +66,7 @@
                 <Image Source="003-floppy-disk.png" Height="16"></Image>
             </Button>
             <Separator MinWidth="2" />
-            <Button ToolTip="Печать">
+            <Button ToolTip="Печать" Click="Print_Click">
                 <Image Source="004-printer.png" Height="16"></Image>
             </Button>
             <Button ToolTip="Предварительный просмотр">
@@ -97,13 +97,13 @@
             <ComboBox Margin="7,5,0,5" Width="150"></ComboBox>
             <ComboBox Margin="8,5,0,5" Width="53"></ComboBox>
             <Separator MinWidth="2" Margin="9,2,2,2" />
-            <ToggleButton ToolTip="Жирный" BorderThickness="2,1,1,1">
+            <ToggleButton ToolTip="Жирный" BorderThickness="2,1,1,1" Command="ToggleBold">
                 <Image Source="format-bold_119110.ico" Width="24" Height="16"></Image>
             </ToggleButton>
-            <ToggleButton ToolTip="Курсив" BorderThickness="0,1,1,1">
+            <ToggleButton ToolTip="Курсив" BorderThickness="0,1,1,1" Command="ToggleItalic">
                 <Image Source="italic_icon_128833.ico" Width="24" Height="16"></Image>
             </ToggleButton>
-            <ToggleButton ToolTip="Подчеркивание " BorderThickness="0,1,1,1">
+            <ToggleButton ToolTip="Подчеркивание " BorderThickness="0,1,1,1"  Command="ToggleUnderline">
                 <Image Source="Underline_icon-icons.com_55789.ico" Width="24" Height="16"></Image>
             </ToggleButton>
 
