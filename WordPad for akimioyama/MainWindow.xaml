@@ -5,13 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WordPad_for_akimioyama"
         mc:Ignorable="d"
-        Title="WordPad for akimioyama" Width="971" Height="535">
-    <Grid Background="#FFB8B8B8">
-        <Menu Height="25" VerticalAlignment="Top">
+        Title="WordPad for akimioyama" Width="900" Height="535" WindowStartupLocation="CenterScreen">
+    <Grid  Background="#FFB8B8B8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="18"></RowDefinition>
+            <RowDefinition Height="35" ></RowDefinition>
+            <RowDefinition Height="65"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Menu Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Height="25" VerticalAlignment="Top" Grid.RowSpan="2">
             <MenuItem Header="_Файл">
-                <MenuItem Header="Создать" Click="Create_Click" ></MenuItem> 
+                <MenuItem Header="Создать" Click="Create_Click" ></MenuItem>
                 <MenuItem Header="Открыть" Click="Open_Click"></MenuItem>
-                <MenuItem Header="Сохранить"></MenuItem>
+                <MenuItem Header="Сохранить" Click="Save_Click"></MenuItem>
                 <MenuItem Header="Сохранить как..." Click="Save_As_Click"></MenuItem>
                 <Separator />
                 <MenuItem Header="Печать" Click="Print_Click"></MenuItem>
@@ -31,31 +42,31 @@
                 <MenuItem Header="Очистить" Command="Delete"></MenuItem>
                 <MenuItem Header="Выделить всё" Command="SelectAll "></MenuItem>
                 <Separator />
-                <MenuItem Header="Найти" Command="Find"></MenuItem>
-                <MenuItem Header="Заменить" Command="Replace"></MenuItem>
+                <MenuItem Header="Найти"></MenuItem>
+                <MenuItem Header="Заменить"></MenuItem>
 
             </MenuItem>
             <MenuItem Header="Вид" >
-                <MenuItem Header="Панель инструментов" IsCheckable="True" IsChecked="True" />
-                <MenuItem Header="Панель форматирования" IsCheckable="True" IsChecked="True" />
+                <MenuItem x:Name="qqq" Header="Панель инструментов" IsCheckable="True" IsChecked="True" Click="qqqq"/>
+                <MenuItem x:Name="rrr" Header="Панель форматирования" IsCheckable="True" IsChecked="True" Click="rrrr"/>
                 <MenuItem Header="Линейка" IsCheckable="True" IsChecked="True" />
-                <MenuItem Header="Строка состояния" IsCheckable="True" IsChecked="True" />
             </MenuItem>
             <MenuItem Header="Вставка" >
                 <MenuItem Header="Дата и время..." ></MenuItem>
                 <MenuItem Header="Объект..." ></MenuItem>
             </MenuItem>
             <MenuItem Header="Формат" >
-                <MenuItem Header="Шрифт..." ></MenuItem>
+                <MenuItem Header="Шрифт..." Click="Font_Click" ></MenuItem>
                 <MenuItem Header="Маркер" IsCheckable="True"></MenuItem>
                 <MenuItem Header="Абзац..." ></MenuItem>
+                <MenuItem Header="Цвет" Click="Color_Click"></MenuItem>
             </MenuItem>
             <MenuItem Header="Справка" >
                 <MenuItem Header="Вызов справки" ></MenuItem>
                 <MenuItem Header="О программе" ></MenuItem>
             </MenuItem>
         </Menu>
-        <ToolBar Height="33" Margin="-12,24,0,0" VerticalAlignment="Top" MaxHeight="35" MinHeight="35">
+        <ToolBar Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" x:Name="ToolBar1" Height="35" VerticalAlignment="Top" MaxHeight="35" MinHeight="35" Margin="-12,0,0,0">
             <Button ToolTip="Создать" Margin="7,0,0,0" Click="Create_Click" >
                 <Image Source="001-.png" Height="16"></Image>
             </Button>
@@ -76,45 +87,64 @@
                 <Image Source="006-find.png" Width="24" Height="16"></Image>
             </Button>
             <Separator MinWidth="2" />
-            <Button ToolTip="Вырезать">
+            <Button ToolTip="Вырезать" Command="Cut">
                 <Image Source="007-cut.png" Width="24" Height="16"></Image>
             </Button>
-            <Button ToolTip="Копировать">
+            <Button ToolTip="Копировать" Command="Copy">
                 <Image Source="008-copy.png" Width="24" Height="16"></Image>
             </Button>
-            <Button ToolTip="Вставить">
+            <Button ToolTip="Вставить" Command="Paste">
                 <Image Source="009-insert.png" Width="24" Height="16"></Image>
             </Button>
             <Separator MinWidth="2" />
-            <Button ToolTip="Отмена">
+            <Button ToolTip="Отмена" Command="Undo">
                 <Image Source="010-curve-arrow.png" Width="24" Height="16"></Image>
             </Button>
             <Button ToolTip="Дата/время">
                 <Image Source="011-calendar.png" Width="24" Height="16"></Image>
             </Button>
         </ToolBar>
-        <ToolBar Height="35" Margin="-12,57,0,0" VerticalAlignment="Top" MaxHeight="35" MinHeight="35">
-            <ComboBox Margin="7,5,0,5" Width="150"></ComboBox>
-            <ComboBox Margin="8,5,0,5" Width="53"></ComboBox>
+        <ToolBar Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" x:Name="ToolBar2" Height="35" Margin="-12,32,0,0" VerticalAlignment="Top" MaxHeight="35" MinHeight="35" Grid.RowSpan="2">
+            <ComboBox x:Name="ComboBoxFont" Margin="7,5,0,5" Width="150" SelectionChanged="FontSelection"></ComboBox>
+            <ComboBox x:Name="ComboBoxSize" Margin="0,5" Width="55" Padding="1" SelectionChanged="SizeSelection"/>
             <Separator MinWidth="2" Margin="9,2,2,2" />
-            <ToggleButton ToolTip="Жирный" BorderThickness="2,1,1,1" Command="ToggleBold">
+            <ToggleButton ToolTip="Жирный" BorderThickness="2,1,1,1">
                 <Image Source="format-bold_119110.ico" Width="24" Height="16"></Image>
             </ToggleButton>
-            <ToggleButton ToolTip="Курсив" BorderThickness="0,1,1,1" Command="ToggleItalic">
+            <ToggleButton ToolTip="Курсив" BorderThickness="0,1,1,1" >
                 <Image Source="italic_icon_128833.ico" Width="24" Height="16"></Image>
             </ToggleButton>
-            <ToggleButton ToolTip="Подчеркивание " BorderThickness="0,1,1,1"  Command="ToggleUnderline">
+            <ToggleButton ToolTip="Подчеркивание " BorderThickness="0,1,1,1" >
                 <Image Source="Underline_icon-icons.com_55789.ico" Width="24" Height="16"></Image>
             </ToggleButton>
+            <Button ToolTip="Цвет" Click="Color_Click">
+                <Image Source="paintpalette_79264.png" Width="24" Height="16"></Image>
+            </Button>
+            <Separator MinWidth="2" />
+            <Button ToolTip="По левому краю">
+                <Image Source="ic-drawer_97637.png" Width="24" Height="16"></Image>
+            </Button>
+            <Button ToolTip="По центру">
+                <Image Source="ic-option_97626.png" Width="24" Height="16"></Image>
+            </Button>
+            <Button ToolTip="По правому краю">
+                <Image Source="ic-drawer_97637.png"  Width="24" Height="16" RenderTransformOrigin="0.5,0.5">
+                    <Image.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="-1"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Image.RenderTransform>
+                </Image>
+            </Button>
+            <Button ToolTip="Маркеры">
+                <Image Source="ic-list_97614.png" Width="24" Height="16"></Image>
+            </Button>
 
         </ToolBar>
-        <RichTextBox x:Name="TextBlock" HorizontalAlignment="Left" Height="374" Margin="10,120,0,0" VerticalAlignment="Top" Width="933">
-            <FlowDocument>
-                <Paragraph>
-                    <Run/>
-                </Paragraph>
-            </FlowDocument>
-        </RichTextBox>
+        <RichTextBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="3" x:Name="TextBlock" HorizontalAlignment="Left" SelectionChanged="TextBlock_Selection" Padding="2" Width="Auto" TextChanged="Text_Chahged" />
 
 
     </Grid>

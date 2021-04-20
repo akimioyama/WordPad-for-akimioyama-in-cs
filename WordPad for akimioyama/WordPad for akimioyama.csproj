@@ -37,6 +37,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -138,6 +140,18 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Underline_icon-icons.com_55789.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="paintpalette_79264.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ic-drawer_97637.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ic-option_97626.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ic-list_97614.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
