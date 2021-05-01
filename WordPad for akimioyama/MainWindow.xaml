@@ -56,7 +56,7 @@
             </MenuItem>
             <MenuItem Header="Справка" >
                 <MenuItem Header="Вызов справки" ></MenuItem>
-                <MenuItem Header="О программе" ></MenuItem>
+                <MenuItem Header="О программе" Click="About_WordPad"></MenuItem>
             </MenuItem>
         </Menu>
         <ToolBar Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" x:Name="ToolBar1" Height="35" VerticalAlignment="Top" MaxHeight="35" MinHeight="35" Margin="-12,0,0,0">

@@ -489,12 +489,27 @@ namespace WordPad_for_akimioyama
             
 
         }
+
+
         //.....................................
 
 
         //Конекстное меню.......................
-       
+
+        //.....................................
+
+
+
+
+        //О программе...........................
+        private void About_WordPad(object sender, RoutedEventArgs e)
+        {
+            Window3 taskWindow = new Window3();
+            taskWindow.Owner = this;
+            taskWindow.ShowDialog();
+        }
         //.....................................
     }
+
 
 }
