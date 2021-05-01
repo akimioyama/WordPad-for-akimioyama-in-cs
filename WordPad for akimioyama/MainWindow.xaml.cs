@@ -109,7 +109,8 @@ namespace WordPad_for_akimioyama
         //Создать, открыть, созранить как...............
         private void Create_Click(object sender, RoutedEventArgs e)
         {
-            TextBlock.Document.Blocks.Clear();
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
         }
         private void Open_Click(object sender, RoutedEventArgs e)
         {
@@ -195,8 +196,31 @@ namespace WordPad_for_akimioyama
                 MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
             if (response == MessageBoxResult.Yes)
             {
-                Application.Current.Shutdown();
-                // првоерка на сохранеин ДОБАВИТЬ!
+                var qwe = MessageBox.Show("Хотите сохранить файл?", "Сохранение", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+                if (qwe == MessageBoxResult.No)
+                {
+                    Application.Current.Shutdown();
+                }
+                else
+                {
+                    SaveFileDialog sfd = new SaveFileDialog(); // диологове окно
+                    sfd.Filter = "Файл RTF (*.rtf)|*.rtf|Текстовый файлы (*.txt)|*.txt|XAML Файл (*.xaml)|*.xaml|Все файлы (*.*)|*.*";  // фильтр 
+
+                    if (sfd.ShowDialog() == true)
+                    {
+                        TextRange doc = new TextRange(TextBlock.Document.ContentStart, TextBlock.Document.ContentEnd);
+                        using (FileStream fs = File.Create(sfd.FileName))
+                        {
+                            if (Path.GetExtension(sfd.FileName).ToLower() == ".rtf")
+                                doc.Save(fs, DataFormats.Rtf);
+                            else if (Path.GetExtension(sfd.FileName).ToLower() == ".txt")
+                                doc.Save(fs, DataFormats.Text);
+                            else
+                                doc.Save(fs, DataFormats.Xaml);
+                        }
+                        mb_save = true;
+                    }
+                }
             }
         }
         private void Font_Click(object sender, RoutedEventArgs e)
