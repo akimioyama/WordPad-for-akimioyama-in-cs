@@ -26,10 +26,6 @@
                 <MenuItem Header="Сохранить как..." Click="Save_As_Click"></MenuItem>
                 <Separator />
                 <MenuItem Header="Печать" Click="Print_Click"></MenuItem>
-                <MenuItem Header="Предварительный просмотр"></MenuItem>
-                <MenuItem Header="Параметры страницы" ></MenuItem>
-                <Separator />
-                <MenuItem Header="Отправить" ></MenuItem>
                 <Separator />
                 <MenuItem Header="Выход" Click="Exit_Click" ></MenuItem>
             </MenuItem>
@@ -41,9 +37,6 @@
                 <MenuItem Header="Вставить" Command="Paste" ></MenuItem>
                 <MenuItem Header="Очистить" Command="Delete"></MenuItem>
                 <MenuItem Header="Выделить всё" Command="SelectAll "></MenuItem>
-                <Separator />
-                <MenuItem Header="Найти"></MenuItem>
-                <MenuItem Header="Заменить"></MenuItem>
 
             </MenuItem>
             <MenuItem Header="Вид" >
@@ -52,7 +45,7 @@
                 <MenuItem Header="Линейка" IsCheckable="True" IsChecked="True" />
             </MenuItem>
             <MenuItem Header="Вставка" >
-                <MenuItem Header="Дата и время..." ></MenuItem>
+                <MenuItem Header="Дата и время..."  Click="Data_Time_Click"></MenuItem>
                 <MenuItem Header="Объект..." ></MenuItem>
             </MenuItem>
             <MenuItem Header="Формат" >
@@ -83,7 +76,7 @@
             <Button ToolTip="Предварительный просмотр">
                 <Image Source="005-search.png" Height="16"></Image>
             </Button>
-            <Button ToolTip="Поиск">
+            <Button ToolTip="Поиск" Click="Search_Click">
                 <Image Source="006-find.png" Width="24" Height="16"></Image>
             </Button>
             <Separator MinWidth="2" />
@@ -100,7 +93,7 @@
             <Button ToolTip="Отмена" Command="Undo">
                 <Image Source="010-curve-arrow.png" Width="24" Height="16"></Image>
             </Button>
-            <Button ToolTip="Дата/время">
+            <Button ToolTip="Дата/время" Click="Data_Time_Click">
                 <Image Source="011-calendar.png" Width="24" Height="16"></Image>
             </Button>
         </ToolBar>
@@ -108,7 +101,7 @@
             <ComboBox x:Name="ComboBoxFont" Margin="7,5,0,5" Width="150" SelectionChanged="FontSelection"></ComboBox>
             <ComboBox x:Name="ComboBoxSize" Margin="0,5" Width="55" Padding="1" SelectionChanged="SizeSelection"/>
             <Separator MinWidth="2" Margin="9,2,2,2" />
-            <ToggleButton ToolTip="Жирный" BorderThickness="2,1,1,1">
+            <ToggleButton ToolTip="Жирный" BorderThickness="2,1,1,1" Click="Bold_Click">
                 <Image Source="format-bold_119110.ico" Width="24" Height="16"></Image>
             </ToggleButton>
             <ToggleButton ToolTip="Курсив" BorderThickness="0,1,1,1" >
@@ -121,13 +114,13 @@
                 <Image Source="paintpalette_79264.png" Width="24" Height="16"></Image>
             </Button>
             <Separator MinWidth="2" />
-            <Button ToolTip="По левому краю">
+            <RadioButton x:Name="leftt" ToolTip="По левому краю" Click="Align_Clik">
                 <Image Source="ic-drawer_97637.png" Width="24" Height="16"></Image>
-            </Button>
-            <Button ToolTip="По центру">
+            </RadioButton>
+            <RadioButton x:Name="centerr" ToolTip="По центру"  Click="Align_Clik">
                 <Image Source="ic-option_97626.png" Width="24" Height="16"></Image>
-            </Button>
-            <Button ToolTip="По правому краю">
+            </RadioButton>
+            <RadioButton x:Name="rightt"  ToolTip="По правому краю" Click="Align_Clik">
                 <Image Source="ic-drawer_97637.png"  Width="24" Height="16" RenderTransformOrigin="0.5,0.5">
                     <Image.RenderTransform>
                         <TransformGroup>
@@ -138,13 +131,23 @@
                         </TransformGroup>
                     </Image.RenderTransform>
                 </Image>
-            </Button>
-            <Button ToolTip="Маркеры">
+            </RadioButton>
+            <ToggleButton x:Name="Marks" ToolTip="Маркеры" Click="Markers_Click">
                 <Image Source="ic-list_97614.png" Width="24" Height="16"></Image>
-            </Button>
+            </ToggleButton>
 
         </ToolBar>
-        <RichTextBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="3" x:Name="TextBlock" HorizontalAlignment="Left" SelectionChanged="TextBlock_Selection" Padding="2" Width="Auto" TextChanged="Text_Chahged" />
+        <RichTextBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="3" x:Name="TextBlock" HorizontalAlignment="Left" SelectionChanged="TextBlock_Selection" Padding="2" Width="Auto" TextChanged="textChanged">
+            <RichTextBox.Resources>
+                    <Style TargetType="Paragraph">
+                        <Setter Property="Margin" Value="0"/>
+                    </Style>
+                </RichTextBox.Resources>
+            <FlowDocument x:Name="doc">
+                <Paragraph>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
 
 
     </Grid>
