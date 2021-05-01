@@ -101,13 +101,13 @@
             <ComboBox x:Name="ComboBoxFont" Margin="7,5,0,5" Width="150" SelectionChanged="FontSelection"></ComboBox>
             <ComboBox x:Name="ComboBoxSize" Margin="0,5" Width="55" Padding="1" SelectionChanged="SizeSelection"/>
             <Separator MinWidth="2" Margin="9,2,2,2" />
-            <ToggleButton ToolTip="Жирный" BorderThickness="2,1,1,1" Click="Bold_Click">
+            <ToggleButton x:Name="Boold"  ToolTip="Жирный" BorderThickness="2,1,1,1">
                 <Image Source="format-bold_119110.ico" Width="24" Height="16"></Image>
             </ToggleButton>
-            <ToggleButton ToolTip="Курсив" BorderThickness="0,1,1,1" >
+            <ToggleButton ToolTip="Курсив" BorderThickness="0,1,1,1">
                 <Image Source="italic_icon_128833.ico" Width="24" Height="16"></Image>
             </ToggleButton>
-            <ToggleButton ToolTip="Подчеркивание " BorderThickness="0,1,1,1" >
+            <ToggleButton ToolTip="Подчеркивание " BorderThickness="0,1,1,1">
                 <Image Source="Underline_icon-icons.com_55789.ico" Width="24" Height="16"></Image>
             </ToggleButton>
             <Button ToolTip="Цвет" Click="Color_Click">
@@ -143,6 +143,17 @@
                         <Setter Property="Margin" Value="0"/>
                     </Style>
                 </RichTextBox.Resources>
+            <RichTextBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Command="Cut"></MenuItem>
+                    <MenuItem Command="Copy"></MenuItem>
+                    <MenuItem Command="Paste"></MenuItem>
+                    <Separator />
+                    <MenuItem Header="Шрифт" Click="Font_Click"></MenuItem>
+                    <MenuItem Header="Маркеры"></MenuItem>
+                    <MenuItem Header="Цвет" Click="Color_Click"></MenuItem>
+                </ContextMenu>
+            </RichTextBox.ContextMenu>
             <FlowDocument x:Name="doc">
                 <Paragraph>
                 </Paragraph>

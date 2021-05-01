@@ -25,6 +25,7 @@ using Application = System.Windows.Application;
 using System.Drawing.Text;
 using ComboBox = System.Windows.Controls.ComboBox;
 using Prism.Services.Dialogs;
+using System.Windows.Controls.Primitives;
 
 //< MenuItem Header = "Предварительный просмотр" ></ MenuItem >
 //< MenuItem Header = "Параметры страницы" ></ MenuItem > 
@@ -32,6 +33,7 @@ using Prism.Services.Dialogs;
 //< MenuItem Header = "Отправить" ></ MenuItem >
 //< MenuItem Header = "Найти" ></ MenuItem >
 //< MenuItem Header = "Заменить" ></ MenuItem >
+// Command="ToggleBold "
 
 namespace WordPad_for_akimioyama
 {
@@ -47,7 +49,6 @@ namespace WordPad_for_akimioyama
             InitializeComponent();
             FillSizeComboBox(ComboBoxSize);
             FillFontComboBox(ComboBoxFont);
-            ComboBoxSize.SelectedIndex = 4;
             TextBlock.FontSize = Convert.ToDouble(ComboBoxSize.SelectedItem) * 92.0 / 72.0;
             TextBlock.FontFamily = new FontFamily(ComboBoxFont.SelectedIndex.ToString());
             leftt.IsChecked = true;
@@ -442,12 +443,34 @@ namespace WordPad_for_akimioyama
         //Жирный, курсив и подяёркивание......
         private void Bold_Click(object sender, RoutedEventArgs e)
         {
-            string fontName = (string)ComboBoxFont.SelectedItem;
-            FontStyle oldFont = TextBlock.Document.FontStyle;
+            double size = (double)ComboBoxSize.SelectedItem;
+            string nameFont = ComboBoxFont.SelectedItem.ToString();
+
+            if (Boold.IsChecked == true)
+            {
+                TextBlock.Selection.ApplyPropertyValue(System.Windows.Controls.RichTextBox.FontSizeProperty, size);
+                TextBlock.Selection.ApplyPropertyValue(System.Windows.Controls.RichTextBox.FontFamilyProperty, nameFont);
+                TextBlock.Selection.ApplyPropertyValue(System.Windows.Controls.RichTextBox.FontWeightProperty, FontWeights.Bold);
+                
+                TextBlock.Focus();
+            }
+            else
+            {
+                TextBlock.Selection.ApplyPropertyValue(System.Windows.Controls.RichTextBox.FontSizeProperty, size);
+                TextBlock.Selection.ApplyPropertyValue(System.Windows.Controls.RichTextBox.FontFamilyProperty, nameFont);
+                TextBlock.Selection.ApplyPropertyValue(System.Windows.Controls.RichTextBox.FontWeightProperty, FontWeights.Normal);
+                
+                TextBlock.Focus();
+            }
             
+
         }
+        //.....................................
 
 
+        //Конекстное меню.......................
+       
         //.....................................
     }
+
 }
