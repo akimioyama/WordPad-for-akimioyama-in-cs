@@ -303,8 +303,6 @@ namespace WordPad_for_akimioyama
 
 
 
-
-
         //Дата и время................
         private void Data_Time_Click(object sender, RoutedEventArgs e)
         {
@@ -363,9 +361,10 @@ namespace WordPad_for_akimioyama
         }
         //............................
 
+
+
         //Вырвавниванете..............
         TextAlignment currentAlign = TextAlignment.Left;
-        
         private void Align_Clik(object sender, RoutedEventArgs e)
         {
             
@@ -450,18 +449,43 @@ namespace WordPad_for_akimioyama
 
 
 
-
         //Маркеры.....................
         private void Markers_Click(object sender, RoutedEventArgs e)
         {
-            if (Marks.IsChecked == true)
+            TextMarkerStyle style = TextMarkerStyle.Square;
+            switch ((sender as FrameworkElement).Name)
             {
-                string markss = "*";
-                
+                case "markerDigit": style = TextMarkerStyle.Decimal; break;
+                case "markerDisk": style = TextMarkerStyle.Disc; break;
+                case "markerRoman": style = TextMarkerStyle.UpperRoman; break;
+            }
+
+            List<Block> blocks = doc.Blocks.Where(b => b.ContentStart.CompareTo(TextBlock.Selection.End) < 0 && b.ContentEnd.CompareTo(TextBlock.Selection.Start) > 0).ToList();
+            try
+            {
+                if (blocks != null && (blocks[0] is Paragraph par))
+                {
+                    Block upper = par.PreviousBlock;
+                    Block next = par.NextBlock;
+
+                    List list = new List(new ListItem(par));
+                    list.MarkerStyle = style;
+                    if (upper != null)
+                        doc.Blocks.InsertAfter(upper, list);
+                    else if (next != null)
+                        doc.Blocks.InsertBefore(next, list);
+                    else
+                        doc.Blocks.Add(list);
+                    TextBlock.CaretPosition = list.ContentEnd;
+                }
+            }
+            catch
+            {
                 
             }
         }
         //............................
+
 
 
         //Жирный, курсив и подяёркивание......
@@ -486,17 +510,9 @@ namespace WordPad_for_akimioyama
                 
                 TextBlock.Focus();
             }
-            
-
         }
-
-
         //.....................................
 
-
-        //Конекстное меню.......................
-
-        //.....................................
 
 
 

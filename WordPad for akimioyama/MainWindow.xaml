@@ -132,9 +132,9 @@
                     </Image.RenderTransform>
                 </Image>
             </RadioButton>
-            <ToggleButton x:Name="Marks" ToolTip="Маркеры" Click="Markers_Click">
+            <Button x:Name="markerDisk" ToolTip="Маркеры" Click="Markers_Click">
                 <Image Source="ic-list_97614.png" Width="24" Height="16"></Image>
-            </ToggleButton>
+            </Button>
 
         </ToolBar>
         <RichTextBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="3" x:Name="TextBlock" HorizontalAlignment="Left" SelectionChanged="TextBlock_Selection" Padding="2" Width="Auto" TextChanged="textChanged">
