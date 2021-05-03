@@ -6,6 +6,14 @@
         xmlns:local="clr-namespace:WordPad_for_akimioyama"
         mc:Ignorable="d"
         Title="WordPad for akimioyama" Width="900" Height="535" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style TargetType="Paragraph">
+            <Setter Property="Margin" Value="0"/>
+        </Style>
+        <Style TargetType="ButtonBase">
+            <Setter Property="CommandTarget" Value="{Binding ElementName=TextBlock}"/>
+        </Style>
+    </Window.Resources>
     <Grid  Background="#FFB8B8B8">
         <Grid.RowDefinitions>
             <RowDefinition Height="18"></RowDefinition>
@@ -132,7 +140,10 @@
                     </Image.RenderTransform>
                 </Image>
             </RadioButton>
-            <Button x:Name="markerDisk" ToolTip="Маркеры" Click="Markers_Click">
+            <Button x:Name="markerDisk" ToolTip="Маркеры" Command="{x:Static EditingCommands.ToggleBullets}">
+                <Image Source="ic-list_97614.png" Width="24" Height="16"></Image>
+            </Button>
+            <Button ToolTip="Маркеры" Command="{x:Static EditingCommands.ToggleNumbering}">
                 <Image Source="ic-list_97614.png" Width="24" Height="16"></Image>
             </Button>
 
