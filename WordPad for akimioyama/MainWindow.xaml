@@ -3,6 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        
         xmlns:local="clr-namespace:WordPad_for_akimioyama"
         mc:Ignorable="d"
         Title="WordPad for akimioyama" Width="900" Height="535" WindowStartupLocation="CenterScreen">
@@ -58,7 +60,7 @@
             </MenuItem>
             <MenuItem Header="Формат" >
                 <MenuItem Header="Шрифт..." Click="Font_Click" ></MenuItem>
-                <MenuItem Header="Маркер" IsCheckable="True"></MenuItem>
+                <MenuItem Header="Маркер"  Click="Markers_Click"></MenuItem>
                 <MenuItem Header="Абзац..." ></MenuItem>
                 <MenuItem Header="Цвет" Click="Color_Click"></MenuItem>
             </MenuItem>
@@ -112,15 +114,17 @@
             <ToggleButton x:Name="Boold"  ToolTip="Жирный" BorderThickness="2,1,1,1" Command="{x:Static EditingCommands.ToggleBold}">
                 <Image Source="format-bold_119110.ico" Width="24" Height="16"></Image>
             </ToggleButton>
-            <ToggleButton ToolTip="Курсив" BorderThickness="0,1,1,1" Command="{x:Static EditingCommands.ToggleItalic}">
+            <ToggleButton x:Name="Kur" ToolTip="Курсив" BorderThickness="0,1,1,1" Command="{x:Static EditingCommands.ToggleItalic}">
                 <Image Source="italic_icon_128833.ico" Width="24" Height="16"></Image>
             </ToggleButton>
-            <ToggleButton ToolTip="Подчеркивание " BorderThickness="0,1,1,1"  Command="{x:Static EditingCommands.ToggleUnderline}">
+            <ToggleButton x:Name="Under" ToolTip="Подчеркивание " BorderThickness="0,1,1,1"  Command="{x:Static EditingCommands.ToggleUnderline}">
                 <Image Source="Underline_icon-icons.com_55789.ico" Width="24" Height="16"></Image>
             </ToggleButton>
             <Button ToolTip="Цвет" Click="Color_Click">
                 <Image Source="paintpalette_79264.png" Width="24" Height="16"></Image>
             </Button>
+
+
             <Separator MinWidth="2" />
             <RadioButton x:Name="leftt" ToolTip="По левому краю" Click="Align_Clik">
                 <Image Source="ic-drawer_97637.png" Width="24" Height="16"></Image>
@@ -144,11 +148,10 @@
                 <Image Source="ic-list_97614.png" Width="24" Height="16"></Image>
             </Button>
             <Button ToolTip="Маркеры" Command="{x:Static EditingCommands.ToggleNumbering}">
-                <Image Source="ic-list_97614.png" Width="24" Height="16"></Image>
+                <Image Source="kisspng-computer-icons-download-clip-art-number-list-5b20785b1da628.7184435015288546191215.jpg" Width="24" Height="16"></Image>
             </Button>
-
         </ToolBar>
-        <RichTextBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="3" x:Name="TextBlock" HorizontalAlignment="Left" SelectionChanged="TextBlock_Selection" Padding="2" Width="Auto" TextChanged="textChanged">
+        <RichTextBox VerticalScrollBarVisibility="Visible" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="3" x:Name="TextBlock" HorizontalAlignment="Left" SelectionChanged="TextBlock_Selection" Padding="2" Width="Auto" TextChanged="textChanged" FontFamily="Arial" FontSize="15.333">
             <RichTextBox.Resources>
                     <Style TargetType="Paragraph">
                         <Setter Property="Margin" Value="0"/>

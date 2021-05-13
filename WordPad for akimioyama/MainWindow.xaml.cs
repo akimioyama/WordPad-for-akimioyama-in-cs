@@ -43,15 +43,21 @@ namespace WordPad_for_akimioyama
     public partial class MainWindow : Window
     {
         bool mb_save = false; // переменна для првоерки сохранения файла 
+        string path = @"";
 
         public MainWindow()
         {
             InitializeComponent();
             FillSizeComboBox(ComboBoxSize);
             FillFontComboBox(ComboBoxFont);
-            TextBlock.FontSize = Convert.ToDouble(ComboBoxSize.SelectedItem) * 92.0 / 72.0;
-            TextBlock.FontFamily = new FontFamily(ComboBoxFont.SelectedIndex.ToString());
+            
+
+            double size = Convert.ToDouble(ComboBoxSize.SelectedItem) * 92.0 / 72.0;
+            string fontName = (string)ComboBoxFont.SelectedItem;
+            TextBlock.Selection.ApplyPropertyValue(System.Windows.Controls.RichTextBox.FontSizeProperty, size);
+            TextBlock.Selection.ApplyPropertyValue(System.Windows.Controls.RichTextBox.FontFamilyProperty, fontName);
             leftt.IsChecked = true;
+            TextBlock.Focus();
 
         }
         //Шапка с тестом.................................
@@ -77,6 +83,8 @@ namespace WordPad_for_akimioyama
         }
         private void TextBlock_Selection(object sender, RoutedEventArgs e)
         {
+            
+            
             
         }
         private void SizeSelection(object sender, SelectionChangedEventArgs e)
@@ -152,26 +160,38 @@ namespace WordPad_for_akimioyama
                         doc.Save(fs, DataFormats.Xaml);
                 }
                 mb_save = true;
+                path = sfd.FileName.ToString();
             }
         }
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            SaveFileDialog sfd = new SaveFileDialog(); // диологове окно
-            sfd.Filter = "Файл RTF (*.rtf)|*.rtf|Текстовый файлы (*.txt)|*.txt|XAML Файл (*.xaml)|*.xaml|Все файлы (*.*)|*.*";  // фильтр 
+            //SaveFileDialog sfd = new SaveFileDialog(); // диологове окно
+            //sfd.Filter = "Файл RTF (*.rtf)|*.rtf|Текстовый файлы (*.txt)|*.txt|XAML Файл (*.xaml)|*.xaml|Все файлы (*.*)|*.*";  // фильтр 
 
-            if (sfd.ShowDialog() == true)
+            if (mb_save == false && path != "")
             {
                 TextRange doc = new TextRange(TextBlock.Document.ContentStart, TextBlock.Document.ContentEnd);
-                using (FileStream fs = File.Create(sfd.FileName))
+                FileStream fStream;
+                if (Path.GetExtension(path) == ".rtf")
                 {
-                    if (Path.GetExtension(sfd.FileName).ToLower() == ".rtf")
-                        doc.Save(fs, DataFormats.Rtf);
-                    else if (Path.GetExtension(sfd.FileName).ToLower() == ".txt")
-                        doc.Save(fs, DataFormats.Text);
-                    else
-                        doc.Save(fs, DataFormats.Xaml);
+                    fStream = new FileStream(path, FileMode.Create);
+                    doc.Save(fStream, DataFormats.Rtf);
+                }
+                else if (Path.GetExtension(path) == ".txt")
+                {
+                    fStream = new FileStream(path, FileMode.Create);
+                    doc.Save(fStream, DataFormats.Text);
+                }
+                else
+                {
+                    fStream = new FileStream(path, FileMode.Create);
+                    doc.Save(fStream, DataFormats.Xaml);
                 }
                 mb_save = true;
+            }
+            else
+            {
+
             }
         }
         //..............................................
@@ -196,31 +216,64 @@ namespace WordPad_for_akimioyama
                 MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
             if (response == MessageBoxResult.Yes)
             {
-                var qwe = MessageBox.Show("Хотите сохранить файл?", "Сохранение", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
-                if (qwe == MessageBoxResult.No)
+                if (mb_save == false)
                 {
-                    Application.Current.Shutdown();
+                    var qwe = MessageBox.Show("Хотите сохранить файл?", "Сохранение", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+                    if (qwe == MessageBoxResult.No)
+                    {
+                        Application.Current.Shutdown();
+                    }
+                    else
+                    {
+                        if (path == "")
+                        {
+                            SaveFileDialog sfd = new SaveFileDialog(); // диологове окно
+                            sfd.Filter = "Файл RTF (*.rtf)|*.rtf|Текстовый файлы (*.txt)|*.txt|XAML Файл (*.xaml)|*.xaml|Все файлы (*.*)|*.*";  // фильтр 
+
+                            if (sfd.ShowDialog() == true)
+                            {
+                                TextRange doc = new TextRange(TextBlock.Document.ContentStart, TextBlock.Document.ContentEnd);
+                                using (FileStream fs = File.Create(sfd.FileName))
+                                {
+                                    if (Path.GetExtension(sfd.FileName).ToLower() == ".rtf")
+                                        doc.Save(fs, DataFormats.Rtf);
+                                    else if (Path.GetExtension(sfd.FileName).ToLower() == ".txt")
+                                        doc.Save(fs, DataFormats.Text);
+                                    else
+                                        doc.Save(fs, DataFormats.Xaml);
+                                }
+                                Application.Current.Shutdown();
+                            }
+                        }
+                        else
+                        {
+                            TextRange doc = new TextRange(TextBlock.Document.ContentStart, TextBlock.Document.ContentEnd);
+                            FileStream fStream;
+                            if (Path.GetExtension(path) == ".rtf")
+                            {
+                                fStream = new FileStream(path, FileMode.Create);
+                                doc.Save(fStream, DataFormats.Rtf);
+                            }
+                            else if (Path.GetExtension(path) == ".txt")
+                            {
+                                fStream = new FileStream(path, FileMode.Create);
+                                doc.Save(fStream, DataFormats.Text);
+                            }
+                            else
+                            {
+                                fStream = new FileStream(path, FileMode.Create);
+                                doc.Save(fStream, DataFormats.Xaml);
+                            }
+                            mb_save = true;
+                        }
+                        Application.Current.Shutdown();
+                    }
                 }
                 else
                 {
-                    SaveFileDialog sfd = new SaveFileDialog(); // диологове окно
-                    sfd.Filter = "Файл RTF (*.rtf)|*.rtf|Текстовый файлы (*.txt)|*.txt|XAML Файл (*.xaml)|*.xaml|Все файлы (*.*)|*.*";  // фильтр 
-
-                    if (sfd.ShowDialog() == true)
-                    {
-                        TextRange doc = new TextRange(TextBlock.Document.ContentStart, TextBlock.Document.ContentEnd);
-                        using (FileStream fs = File.Create(sfd.FileName))
-                        {
-                            if (Path.GetExtension(sfd.FileName).ToLower() == ".rtf")
-                                doc.Save(fs, DataFormats.Rtf);
-                            else if (Path.GetExtension(sfd.FileName).ToLower() == ".txt")
-                                doc.Save(fs, DataFormats.Text);
-                            else
-                                doc.Save(fs, DataFormats.Xaml);
-                        }
-                        mb_save = true;
-                    }
+                    Application.Current.Shutdown();
                 }
+
             }
         }
         private void Font_Click(object sender, RoutedEventArgs e)
@@ -234,6 +287,7 @@ namespace WordPad_for_akimioyama
                 TextBlock.FontWeight = fd.Font.Bold ? FontWeights.Bold : FontWeights.Regular;
                 TextBlock.FontStyle = fd.Font.Italic ? FontStyles.Italic : FontStyles.Normal;
             }
+            mb_save = false;
         }
         private void Color_Click(object sender, RoutedEventArgs e)
         {
@@ -241,12 +295,10 @@ namespace WordPad_for_akimioyama
             
             if (cd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                TextBlock.Foreground = new SolidColorBrush(Color.FromArgb(cd.Color.A, cd.Color.R, cd.Color.G, cd.Color.B));
+                SolidColorBrush col = new SolidColorBrush(Color.FromArgb(cd.Color.A, cd.Color.R, cd.Color.G, cd.Color.B));
+                TextBlock.Selection.ApplyPropertyValue(System.Windows.Controls.RichTextBox.ForegroundProperty, col);
             }
-        }
-        private void Color_Click2(object sender, RoutedEventArgs e)
-        {
-            
+            mb_save = false;
         }
         //..............................................
 
@@ -289,15 +341,30 @@ namespace WordPad_for_akimioyama
 
         private void Text_Chahged(object sender, TextChangedEventArgs e) //одна ошибка с перовым элиментом при выделение всего текста и нажатии кнопки
         {
+            TextRange doc = new TextRange(TextBlock.Document.ContentStart, TextBlock.Document.ContentEnd);
             string fontName = (string)ComboBoxFont.SelectedItem;
-        
-            if (fontName != null)
+            double size = Convert.ToDouble(ComboBoxSize.SelectedItem) * 92.0 / 72.0;
+
+            if (doc.Text.Length != 0) 
             {
-                double size = Convert.ToDouble(ComboBoxSize.SelectedItem) * 92.0 / 72.0;
-                TextBlock.Selection.ApplyPropertyValue(System.Windows.Controls.RichTextBox.FontSizeProperty, size);
-                TextBlock.Selection.ApplyPropertyValue(System.Windows.Controls.RichTextBox.FontFamilyProperty, fontName);
-                TextBlock.Focus();
+                
+
+                if (fontName != null)
+                {
+                    
+                    TextBlock.Selection.ApplyPropertyValue(System.Windows.Controls.RichTextBox.FontSizeProperty, size);
+                    TextBlock.Selection.ApplyPropertyValue(System.Windows.Controls.RichTextBox.FontFamilyProperty, fontName);
+                    TextBlock.Focus();
+                }
             }
+            else
+            {
+              
+                
+                TextBlock.Selection.ApplyPropertyValue(System.Windows.Controls.RichTextBox.FontSizeProperty, "12");
+                TextBlock.Selection.ApplyPropertyValue(System.Windows.Controls.RichTextBox.FontFamilyProperty, fontName);
+            }
+            mb_save = false;
         }
 
 
@@ -310,6 +377,7 @@ namespace WordPad_for_akimioyama
             taskWindow.Owner = this;
             taskWindow.ShowDialog();
             Print();
+            mb_save = false;
         }
         private void Print()
         {
@@ -380,20 +448,22 @@ namespace WordPad_for_akimioyama
             if (blocks != null)
                 foreach (Block b in blocks)
                     b.TextAlignment = currentAlign;
+            mb_save = false;
         }
         private void textChanged(object sender, TextChangedEventArgs e)
         {
             string fontName = (string)ComboBoxFont.SelectedItem;
-
+            double size = Convert.ToDouble(ComboBoxSize.SelectedItem) * 92.0 / 72.0;
             if (fontName != null)
             {
-                double size = Convert.ToDouble(ComboBoxSize.SelectedItem) * 92.0 / 72.0;
                 TextBlock.Selection.ApplyPropertyValue(System.Windows.Controls.RichTextBox.FontSizeProperty, size);
                 TextBlock.Selection.ApplyPropertyValue(System.Windows.Controls.RichTextBox.FontFamilyProperty, fontName);
                 TextBlock.Focus();
             }
-          /*if (doc == null) return;
-            TextBlock.CaretPosition.Paragraph.TextAlignment = currentAlign;*/
+            mb_save = false;
+
+            /*if (doc == null) return;
+              TextBlock.CaretPosition.Paragraph.TextAlignment = currentAlign;*/
         }
         /*private void Align_left(object sender, RoutedEventArgs e)
         {
@@ -483,6 +553,7 @@ namespace WordPad_for_akimioyama
             {
                 
             }
+            mb_save = false;
         }
         //............................
 
@@ -524,8 +595,65 @@ namespace WordPad_for_akimioyama
             taskWindow.Owner = this;
             taskWindow.ShowDialog();
         }
+
+
         //.....................................
     }
 
 
 }
+
+/*            <xctk:DropDownButton Content="Цвета" Background="{x:Null}" BorderBrush="{x:Null}">
+                <xctk:DropDownButton.DropDownContent>
+                    <ListBox x:Name="ListBoxColor" SelectionChanged="qwqw">
+                        <ListBoxItem>
+                            <DockPanel>
+                                <Image DockPanel.Dock="Left" Source="blackColor_img.png" Width="16" Height="16"/>
+                                <Label DockPanel.Dock="Right" Content="Чёрный"></Label>
+                            </DockPanel>
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <DockPanel>
+                                <Image DockPanel.Dock="Left" Source="blueColor_img.png" Width="16" Height="16"/>
+                                <Label DockPanel.Dock="Right" Content="Синий"></Label>
+                            </DockPanel>
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <DockPanel>
+                                <Image DockPanel.Dock="Left" Source="greenColor_img.png" Width="16" Height="16"/>
+                                <Label DockPanel.Dock="Right" Content="Зелёный"></Label>
+                            </DockPanel>
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <DockPanel>
+                                <Image DockPanel.Dock="Left" Source="yellowColor_img.png" Width="16" Height="16"/>
+                                <Label DockPanel.Dock="Right" Content="Жёлтый"></Label>
+                            </DockPanel>
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <DockPanel>
+                                <Image DockPanel.Dock="Left" Source="redColor_img.png" Width="16" Height="16"/>
+                                <Label DockPanel.Dock="Right" Content="Красный"></Label>
+                            </DockPanel>
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <DockPanel>
+                                <Image DockPanel.Dock="Left" Source="purpleColor_img.png" Width="16" Height="16"/>
+                                <Label DockPanel.Dock="Right" Content="Фиолетовый"></Label>
+                            </DockPanel>
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <DockPanel>
+                                <Image DockPanel.Dock="Left" Source="grayColor_img.png" Width="16" Height="16"/>
+                                <Label DockPanel.Dock="Right" Content="Серый"></Label>
+                            </DockPanel>
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <DockPanel>
+                                <Image DockPanel.Dock="Left" Source="whiteColor_img.png" Width="16" Height="16"/>
+                                <Label DockPanel.Dock="Right" Content="Белый"></Label>
+                            </DockPanel>
+                        </ListBoxItem>
+                    </ListBox>
+                </xctk:DropDownButton.DropDownContent>
+            </xctk:DropDownButton>*/
